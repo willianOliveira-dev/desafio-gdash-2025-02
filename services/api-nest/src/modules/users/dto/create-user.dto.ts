@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
     IsString,
     IsEmail,
@@ -12,9 +13,13 @@ export class CreateUserDto {
     // username
     @IsNotEmpty({ message: 'O nome de usuário é obrigatório.' })
     @IsString({ message: 'O nome de usuário deve ser uma string.' })
+    @Matches(/^[A-Za-z0-9_-]+$/, {
+        message: 'Só são permitidos letras, números, "-" e "_"',
+    })
     @Length(2, 25, {
         message: 'O nome de usuário deve ter entre 2 e 25 caracteres.',
     })
+    @Transform(({ value }) => value.toLowerCase() as string)
     username: string;
 
     // email
@@ -22,8 +27,8 @@ export class CreateUserDto {
     @IsEmail({}, { message: 'O e-mail informado não é válido.' })
     email: string;
 
-    @IsNotEmpty({ message: 'A senha é obrigatória.' })
     // password
+    @IsNotEmpty({ message: 'A senha é obrigatória.' })
     @IsString({ message: 'A senha deve ser uma string.' })
     @Length(8, 64, { message: 'A senha deve ter entre 8 e 64 caracteres.' })
     @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,#^()\-_=+]).+$/, {
