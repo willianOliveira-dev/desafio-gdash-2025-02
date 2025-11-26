@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     
     RABBITMQ_URL: str | None = None
     RABBITMQ_QUEUE:str | None = None
+    RABBITMQ_EXCHANGE: str | None = None
+    RABBITMQ_ROUTING_KEY: str | None = None
     
     model_config = SettingsConfigDict(env_file=ENV_PATH, env_file_encoding="utf-8")
 

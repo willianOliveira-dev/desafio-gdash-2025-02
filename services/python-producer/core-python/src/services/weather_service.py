@@ -7,7 +7,7 @@ from src.config import settings
 class WeatherService:
     def __init__(self) -> None:
         if not settings.WEATHER_API_KEY or not settings.WEATHER_BASE_URL:
-            raise ValueError("Configurações de weather imcompletas.")
+            raise ValueError("Configurações de variáveis de ambiente weather imcompletas.")
 
         self.api_key = settings.WEATHER_API_KEY
         self.open_weather_url = settings.WEATHER_BASE_URL
@@ -33,7 +33,6 @@ class WeatherService:
             )
 
     def _parse_weather_data(self, data: dict) -> WeatherData:
-        """Extrair e padronizar dados da resposta da Api"""
         main = data["main"]
         wind = data["wind"]
         sys = data["sys"]

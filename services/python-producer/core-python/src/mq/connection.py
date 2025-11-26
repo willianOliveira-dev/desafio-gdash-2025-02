@@ -5,7 +5,7 @@ from src.config import settings
 class RabbitMQConnection:
     def __init__(self) -> None:
         if not settings.RABBITMQ_QUEUE or not settings.RABBITMQ_URL:
-            raise ValueError("Configurações de RabbitMQ incompletas.")
+            raise ValueError("Configurações de variáveis de ambiente RabbitMQ incompletas.")
         self.url = settings.RABBITMQ_URL
         self.queue_name = settings.RABBITMQ_QUEUE
 
