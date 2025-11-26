@@ -150,8 +150,34 @@ dist
 .DS_Store
 Thumbs.db
 
-# Docker
-.env
+
+# === Virtual environments ===
+venv/
+.env/
+.venv/
+
+# === Docker ===
 docker-compose.override.yml
+
+# === Python ===
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Ruff cache
+.ruff_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing
+.tox/
+.pytest_cache/
+.coverage
+coverage.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/node

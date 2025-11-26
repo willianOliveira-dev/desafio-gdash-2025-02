@@ -47,7 +47,7 @@ services:
         depends_on:
             - rabbitmq
         env_file:
-            - ./services/python-producer/.env
+            - ./services/python-producer/core-python/.env
 
     go-worker:
         build:
