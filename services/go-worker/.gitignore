@@ -1,0 +1,18 @@
+### Go ###
+# Arquivos de Build/Executáveis
+*.exe
+*.test
+*.prof
+
+# Ambiente e Cache do Go
+.cache/
+
+# Módulos
+vendor/
+
+# IDEs / SO 
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
