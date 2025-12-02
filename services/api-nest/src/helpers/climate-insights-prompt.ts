@@ -1,5 +1,5 @@
 export const CLIMATE_INSIGHTS_PROMPT = (
-    DATA_PLACEHOLDER: string
+  DATA_PLACEHOLDER: string,
 ) => `You are a meteorological analysis specialist. Analyze the provided climate data and generate practical and actionable insights.
 
 **CLIMATE DATA:**
@@ -99,4 +99,4 @@ Return ONLY a valid JSON array, without markdown, without explanations, without 
 - Use double quotes for strings
 - Numbers must be without quotes
 - Values for the "type" field must be exactly: "alert", "trend", "comfort", or "summary"
-`;
+`

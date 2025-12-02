@@ -1,11 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 
 @Schema({
-    timestamps: true,
+  timestamps: true,
 })
 export class Insight {
-    @Prop({ Type: String, required: true })
-    text: string;
+  @Prop({ Type: String, required: true })
+  text: string
 }
 
-export const InsightSchema = SchemaFactory.createForClass(Insight);
+export const InsightSchema = SchemaFactory.createForClass(Insight)
