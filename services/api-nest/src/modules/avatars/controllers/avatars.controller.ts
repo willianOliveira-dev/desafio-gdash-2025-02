@@ -10,11 +10,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GetUserPayload } from 'src/common/decorators/get-user-payload.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import multer from 'multer';
 import { AvatarsService } from '../services/avatars.service';
 import { ConfigService } from '@nestjs/config';
 import { Env } from 'src/env.validation';
 import { UsersService } from 'src/modules/users/services/users.service';
+import type { ResponseApi } from 'src/common/interfaces/response-api.interface';
+import multer from 'multer';
 
 @Controller('avatars')
 @UseGuards(JwtAuthGuard)
@@ -53,7 +54,7 @@ export class AvatarsController {
     async uploadImage(
         @GetUserPayload('sub') userId: string,
         @UploadedFile() file: Express.Multer.File
-    ) {
+    ): Promise<ResponseApi<{ url: string }>> {
         let url: string;
 
         if (this.config.get('ENABLE_AVATAR_UPLOAD') === 'true') {

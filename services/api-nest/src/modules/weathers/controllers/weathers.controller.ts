@@ -5,6 +5,9 @@ import { GetWeathersDto } from '../dto/get-weather.dto';
 import { CreateWeatherDto } from '../dto/create-weather.dto';
 import { InsightsService } from '../services/insights.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import type { ResponseApi } from 'src/common/interfaces/response-api.interface';
+import type { WeatherModel, WeatherPageResult } from '../interfaces/weather.interface';
+import type { WeatherInsights } from '../interfaces/insights.interface';
 
 @Controller('weather')
 @UseGuards(JwtAuthGuard)
@@ -15,7 +18,7 @@ export class WeathersController {
     ) {}
 
     @Get('logs')
-    async getPaginatedWeathers(@Query() query: GetWeathersDto) {
+    async getPaginatedWeathers(@Query() query: GetWeathersDto): Promise<ResponseApi<WeatherPageResult>> {
         const weathers = await this.weathersService.getPaginatedWeathers(query);
         return {
             message: 'Dados climáticos encontrados com sucesso.',
@@ -24,7 +27,7 @@ export class WeathersController {
     }
 
     @Post('logs')
-    async createWeather(@Body() dto: CreateWeatherDto) {
+    async createWeather(@Body() dto: CreateWeatherDto): Promise<ResponseApi<WeatherModel>> {
         const weather = await this.weathersService.create(dto);
         return {
             message: 'Registro de clima criado com sucesso.',
@@ -33,7 +36,7 @@ export class WeathersController {
     }
 
     @Get('today')
-    async getTodayWeatherRecord() {
+    async getTodayWeatherRecord(): Promise<ResponseApi<WeatherModel[]>> {
         const weathers = await this.weathersService.getTodayWeatherRecord();
 
         return {
@@ -43,7 +46,7 @@ export class WeathersController {
     }
 
     @Get('insights')
-    async getWeatherInsights() {
+    async getWeatherInsights(): Promise<ResponseApi<WeatherInsights[]>> {
         const weatherInsights = await this.insightsService.getLastestInsights();
         return {
             message: 'Insights climáticos encontrados com sucesso.',

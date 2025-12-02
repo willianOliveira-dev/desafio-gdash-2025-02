@@ -13,6 +13,7 @@ import { ConfigService } from '@nestjs/config';
 import { Env } from 'src/env.validation';
 import { Payload } from '../interfaces/payload.interface';
 import type { CookieOptions, Request, Response } from 'express';
+import type { ResponseApi } from 'src/common/interfaces/response-api.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -35,7 +36,7 @@ export class AuthController {
     async login(
         @Body() dto: LoginDto,
         @Res({ passthrough: true }) res: Response
-    ) {
+    ): Promise<ResponseApi<null>> {
         const { accessToken, refreshToken } =
             await this.authService.loginAndSetTokens(dto);
 
@@ -61,7 +62,7 @@ export class AuthController {
     async refresh(
         @Req() req: Request,
         @Res({ passthrough: true }) res: Response
-    ) {
+    ): Promise<ResponseApi<null>> {
         const refreshToken = req['cookies']['refreshToken'];
 
         if (!refreshToken) {
@@ -96,7 +97,7 @@ export class AuthController {
     async logout(
         @Req() req: Request,
         @Res({ passthrough: true }) res: Response
-    ) {
+    ): Promise<ResponseApi<null>> {
         const refreshToken = req.cookies['refreshToken'];
 
         try {
