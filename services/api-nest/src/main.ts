@@ -5,19 +5,26 @@ import { Env } from './env.validation';
 import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './common/filters/http-execption.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { join } from 'node:path';
 import * as cookieParser from 'cookie-parser';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    const BASE_API = 'api/v1/gdash';
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const config = app.get(ConfigService<Env>);
+    const staticFilePath: string = join(__dirname, '..', 'public');
+    const BASE_API = config.get('BASE_API') as string;
+    const BASE_URL = config.get('BASE_URL') as string;
+    const FRONTEND_URL = config.get('FRONTEND_URL') as string;
+
+    app.useStaticAssets(staticFilePath, { prefix: '/public/' });
 
     app.setGlobalPrefix(BASE_API);
 
     app.use(cookieParser.default());
 
     app.enableCors({
-        origin: config.get('FRONTEND_URL'),
+        origin: FRONTEND_URL,
         credentials: true,
     });
 
@@ -33,8 +40,8 @@ async function bootstrap() {
     await app.listen(config.get('PORT') ?? 3000);
 
     console.log(
-        `🔥 API rodando em http://localhost:${config.get('PORT')}/${BASE_API}
-         📘 Documentação em http://localhost:${config.get('PORT')}/docs
+        `🔥 API rodando em ${BASE_URL}/${BASE_API}
+         📘 Documentação em ${BASE_URL}/docs
         `
     );
 }

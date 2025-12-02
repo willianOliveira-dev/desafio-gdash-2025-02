@@ -1,5 +1,5 @@
 import { plainToInstance } from 'class-transformer';
-import { IsNumber, IsString, IsUrl, validateSync } from 'class-validator';
+import { IsNumber, IsString, validateSync } from 'class-validator';
 
 export class Env {
     @IsString()
@@ -24,6 +24,26 @@ export class Env {
     COOKIE_REFRESH_EXPIRES: number;
     @IsString()
     NODE_ENV: string;
+    @IsString()
+    BASE_API: string;
+    @IsString()
+    BASE_URL: string;
+    @IsString()
+    GOOGLE_GENERATIVE_AI_API_KEY: string;
+    @IsString()
+    ENSURE_DEFAULT_USER_USERNAME: string;
+    @IsString()
+    ENSURE_DEFAULT_USER_EMAIL: string;
+    @IsString()
+    ENSURE_DEFAULT_USER_PASSWORD: string;
+    @IsString()
+    CLOUDINARY_CLOUD_NAME: string;
+    @IsString()
+    CLOUDINARY_API_KEY: string;
+    @IsString()
+    CLOUDINARY_API_SECRET: string;
+    @IsString()
+    ENABLE_AVATAR_UPLOAD: string;
 }
 
 export function validateEnv(config: Record<string, unknown>) {
