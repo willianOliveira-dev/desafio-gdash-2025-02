@@ -1,13 +1,13 @@
 ### Go ###
-# Arquivos de Build/Executáveis
+# Build/Executable Files
 *.exe
 *.test
 *.prof
 
-# Ambiente e Cache do Go
+# Go Environment and Cache
 .cache/
 
-# Módulos
+# Modules
 vendor/
 
 # IDEs / SO 
@@ -16,3 +16,10 @@ vendor/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Envs
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local

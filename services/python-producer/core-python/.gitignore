@@ -1,8 +1,12 @@
 ### Python ###
-# Vens
+# Venvs and Envs
 venv/
-.env/
 .venv/
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
 
 # Byte-compiled / cache
 __pycache__/
