@@ -6,6 +6,7 @@ import type {
     WeatherPageResult,
 } from '../interfaces/weather.interface';
 import { CreateWeatherDto } from '../dto/create-weather.dto';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class WeathersService {
@@ -53,7 +54,6 @@ export class WeathersService {
             sunset: weather.sunset,
         }));
 
-
         return {
             data: weathers,
             meta: {
@@ -65,6 +65,19 @@ export class WeathersService {
                 hasPrev: result.hasPrevPage,
             },
         };
+    }
+
+    @Cron(CronExpression.EVERY_HOUR)
+    async getTodayWeatherRecord(): Promise<WeatherModel[]> {
+        const now = new Date();
+        const day = now.getDate();
+        const month = now.getMonth();
+        const year = now.getFullYear();
+
+        const startDate = new Date(year, month, day, 0, 0, 0, 0);
+        const endDate = now;
+
+        return this.repo.getTodayWeatherRecords(startDate, endDate);
     }
 
     async create(dto: CreateWeatherDto): Promise<WeatherModel> {

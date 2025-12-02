@@ -30,4 +30,30 @@ export class WeathersRepository {
         const { __v, ...weather } = savedWeather.toObject();
         return weather;
     }
+
+    async getLastDays(days: number = 7): Promise<WeatherModel[]> {
+        const now = new Date();
+        const lastDays = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+
+        return this.weatherModel
+            .find({ createdAt: { $gte: lastDays, $lte: now } })
+            .sort({ createdAt: -1 })
+            .select('-__v')
+            .lean()
+            .exec();
+    }
+
+    async getTodayWeatherRecords(startDate: Date, endDate: Date): Promise<WeatherModel[]> {
+        return this.weatherModel
+            .find({
+                createdAt: {
+                    $gte: startDate,
+                    $lte: endDate,
+                },
+            })
+            .sort({ createdAt: -1 })
+            .select('-__v')
+            .lean()
+            .exec();
+    }
 }

@@ -4,7 +4,6 @@ import { Weather } from '../schemas/weathers.schema';
 export interface WeatherDocument extends Weather, Document {}
 
 export interface WeatherModelPaginate extends PaginateModel<WeatherDocument> {}
-
 export interface WeatherModel extends Weather {
     _id: Types.ObjectId;
 }
