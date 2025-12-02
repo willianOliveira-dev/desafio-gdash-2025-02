@@ -29,7 +29,6 @@ export class InsightsService {
           ),
           temperature: 0.7,
         })
-        console.log(text)
         JSON.parse(text.trim())
 
         await this.insightRepo.create(text.trim())
