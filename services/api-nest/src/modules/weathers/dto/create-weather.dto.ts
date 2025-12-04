@@ -80,4 +80,9 @@ export class CreateWeatherDto {
   @IsNotEmpty({ message: 'O horário do pôr do sol é obrigatório.' })
   @IsString({ message: 'O horário do pôr do sol deve ser uma string.' })
   sunset: string
+
+  // currentTime
+  @IsNotEmpty({ message: 'O horário atual é obrigatório.' })
+  @IsString({ message: 'O horário atual deve ser uma string.' })
+  currentTime: string
 }
