@@ -13,14 +13,14 @@ import type {
 import type { WeatherInsights } from '../interfaces/insights.interface'
 
 @Controller('weather')
-@UseGuards(JwtAuthGuard)
+
 export class WeathersController {
   constructor(
     private readonly weathersService: WeathersService,
     private readonly insightsService: InsightsService,
   ) {}
-
   @Get('logs')
+  @UseGuards(JwtAuthGuard)
   async getPaginatedWeathers(
     @Query() query: GetWeathersDto,
   ): Promise<ResponseApi<WeatherPageResult>> {
@@ -43,6 +43,7 @@ export class WeathersController {
   }
 
   @Get('today')
+  @UseGuards(JwtAuthGuard)
   async getTodayWeatherRecord(): Promise<ResponseApi<WeatherModel[]>> {
     const weathers = await this.weathersService.getTodayWeatherRecord()
 
@@ -53,6 +54,7 @@ export class WeathersController {
   }
 
   @Get('insights')
+  @UseGuards(JwtAuthGuard)
   async getWeatherInsights(): Promise<ResponseApi<WeatherInsights[]>> {
     const weatherInsights = await this.insightsService.getLastestInsights()
     return {
