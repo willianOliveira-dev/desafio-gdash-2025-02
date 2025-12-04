@@ -117,8 +117,8 @@ export class AuthController {
             await this.authService.logout(payload.sub.toString());
         } catch (error) {
             throw new HttpException(
-                'Error interno no servidor',
-                HttpStatus.INTERNAL_SERVER_ERROR
+                'Sem token de atualização.',
+                HttpStatus.FORBIDDEN
             );
         }
 
