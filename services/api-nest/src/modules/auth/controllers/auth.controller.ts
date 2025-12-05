@@ -83,12 +83,12 @@ export class AuthController {
             await this.authService.refreshTokens(refreshToken);
 
         const COOKIE_ACCESS = this.setCookie(
-            Number(this.config.get('JWT_ACCESS_EXPIRES') || 15 * 60 * 1000)
+            Number(this.config.get("COOKIE_ACCESS_EXPIRES") || 15 * 60 * 1000)
         );
 
         const COOKIE_REFRESH = this.setCookie(
             Number(
-                this.config.get('JWT_REFRESH_EXPIRES') ||
+                this.config.get('COOKIE_REFRESH_EXPIRES') ||
                     7 * 24 * 60 * 60 * 1000
             )
         );
