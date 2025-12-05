@@ -102,6 +102,12 @@ export class Weather {
     required: true,
   })
   sunset: string
+  // sunset
+  @Prop({
+    type: String,
+    required: true,
+  })
+   currentTime: string
 }
 
 export const WeatherSchema = SchemaFactory.createForClass(Weather)
