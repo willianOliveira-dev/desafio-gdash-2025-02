@@ -24,6 +24,10 @@ export class WeathersRepository {
     return this.weatherModel.paginate(query, options)
   }
 
+  async findAll(): Promise<WeatherModel[]> {
+    return this.weatherModel.find().lean().select('-__v').exec()
+  }
+
   async create(dto: CreateWeatherDto): Promise<WeatherModel> {
     const createdWeather = new this.weatherModel(dto)
     const savedWeather = await createdWeather.save()

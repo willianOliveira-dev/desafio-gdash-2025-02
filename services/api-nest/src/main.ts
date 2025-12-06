@@ -6,7 +6,11 @@ import { ValidationPipe } from '@nestjs/common'
 import { HttpExceptionFilter } from './common/filters/http-execption.filter'
 import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { join } from 'node:path'
+import morgan from 'morgan'
+import helmet from 'helmet'
+import compression from 'compression'
 import * as cookieParser from 'cookie-parser'
+
 import type { NestExpressApplication } from '@nestjs/platform-express'
 
 async function bootstrap() {
@@ -22,6 +26,9 @@ async function bootstrap() {
   app.setGlobalPrefix(BASE_API)
 
   app.use(cookieParser.default())
+  app.use(morgan('dev'))
+  app.use(helmet())
+  app.use(compression())
 
   app.enableCors({
     origin: FRONTEND_URL,

@@ -1,10 +1,12 @@
-import { Body, Controller, HttpCode, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Header, Query, Res, UseGuards } from '@nestjs/common'
 import { WeathersService } from '../services/weathers.service'
 import { Get, Post } from '@nestjs/common'
 import { GetWeathersDto } from '../dto/get-weather.dto'
 import { CreateWeatherDto } from '../dto/create-weather.dto'
 import { InsightsService } from '../services/insights.service'
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard'
+import { ExportService } from '../services/export.service'
+import { type Response } from 'express'
 import type { ResponseApi } from 'src/common/interfaces/response-api.interface'
 import type {
   WeatherModel,
@@ -18,6 +20,7 @@ export class WeathersController {
   constructor(
     private readonly weathersService: WeathersService,
     private readonly insightsService: InsightsService,
+    private readonly exportService: ExportService
   ) {}
   @Get('logs')
   @UseGuards(JwtAuthGuard)
@@ -61,5 +64,32 @@ export class WeathersController {
       message: 'Insights climáticos encontrados com sucesso.',
       data: weatherInsights,
     }
+  }
+
+  @Get("export.csv")
+  async exportCSV(@Res() res: Response) {
+    const data =  await this.weathersService.findAll()
+    const csv = this.exportService.generateCSV(data)
+    res.setHeader('Content-Type', 'text/csv')
+    res.setHeader('Content-Disposition', 'attachment; filename=weather.csv')
+    return res.send(csv)
+  }
+
+  @Get('export.xlsx')
+  async exportXLXS(@Res() res: Response){
+    const data = await this.weathersService.findAll()
+    const buffer = await this.exportService.generateXLSX(data)
+
+    res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  )
+
+    res.setHeader(
+    'Content-Disposition',
+    'attachment; filename=weather.xlsx'
+  )
+
+    return res.end(buffer)
   }
 }

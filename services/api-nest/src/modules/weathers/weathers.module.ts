@@ -8,6 +8,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { InsightsService } from './services/insights.service'
 import { Insight, InsightSchema } from './schemas/insights.schemat'
 import { InsightsRepository } from './repository/insights.repository'
+import { ExportService } from './services/export.service'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { InsightsRepository } from './repository/insights.repository'
     WeathersRepository,
     InsightsService,
     InsightsRepository,
+    ExportService
   ],
   controllers: [WeathersController],
   exports: [InsightsService],

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { GetWeathersDto } from '../dto/get-weather.dto'
 import { WeathersRepository } from '../repository/weathers.repository'
+import { CreateWeatherDto } from '../dto/create-weather.dto'
+import { Cron, CronExpression } from '@nestjs/schedule'
 import type {
   WeatherModel,
   WeatherPageResult,
 } from '../interfaces/weather.interface'
-import { CreateWeatherDto } from '../dto/create-weather.dto'
-import { Cron, CronExpression } from '@nestjs/schedule'
 
 @Injectable()
 export class WeathersService {
@@ -64,6 +64,10 @@ export class WeathersService {
         hasPrev: result.hasPrevPage,
       },
     }
+  }
+
+  async findAll(): Promise<WeatherModel[]> {
+    return this.repo.findAll()
   }
 
   @Cron(CronExpression.EVERY_HOUR)
