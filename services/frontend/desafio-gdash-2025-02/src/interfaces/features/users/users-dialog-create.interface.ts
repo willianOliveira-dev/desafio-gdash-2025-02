@@ -25,4 +25,5 @@ export interface UsersDialogCreateProps {
     file: File | null;
     form: UserFormValues;
     setFile: Dispatch<SetStateAction<File | null>>;
+    isLoading: boolean;
 }

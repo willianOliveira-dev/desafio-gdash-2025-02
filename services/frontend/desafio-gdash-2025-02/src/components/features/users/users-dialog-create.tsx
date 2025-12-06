@@ -23,6 +23,7 @@ export function UsersDialogCreate({
     file,
     form,
     setFile,
+    isLoading,
 }: UsersDialogCreateProps) {
     const [eyeOpen, setEyeOpen] = useState(false);
 
@@ -36,7 +37,7 @@ export function UsersDialogCreate({
                     <label className="relative cursor-pointer">
                         <div className="w-24 h-24 rounded-full bg-primary-500/20 flex items-center justify-center overflow-hidden">
                             {file ? (
-                                <AvatarShadcn className='size-full'>
+                                <AvatarShadcn className="size-full">
                                     <AvatarImage
                                         src={URL.createObjectURL(file)}
                                         alt="avatar"
@@ -244,7 +245,7 @@ export function UsersDialogCreate({
                         type="submit"
                         className="w-full bg-primary-500 hover:bg-primary-600"
                     >
-                        Criar usuário
+                        {isLoading ? 'Criando...' : 'Criar usuário'}
                     </Button>
                 </form>
             </div>

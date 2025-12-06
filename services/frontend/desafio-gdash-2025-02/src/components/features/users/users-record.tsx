@@ -9,12 +9,13 @@ import {
 } from '@/components/ui/table';
 import { dateFormat } from '@/helpers/date-format';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { DialogTrigger, Dialog } from '@/components/ui/dialog';
 import { UsersDialogUpdate } from './users-dialog-update';
-import type { User } from '@/interfaces/http/models/user.interface';
 import { settings } from '@/config/settings';
 import { useState } from 'react';
+import { UsersDeleteButton } from './users-delete-button';
+import type { User } from '@/interfaces/http/models/user.interface';
 
 export function UsersRecord({ data }: { data: User[] }) {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -22,6 +23,7 @@ export function UsersRecord({ data }: { data: User[] }) {
     const isDialogOpen = !!selectedUser;
 
     const closeDialog = () => setSelectedUser(null);
+
     return (
         <div className="border p-2.5 rounded-md">
             <Dialog
@@ -83,17 +85,8 @@ export function UsersRecord({ data }: { data: User[] }) {
                                             <Pencil />
                                         </Button>
                                     </DialogTrigger>
-                                    <Button
-                                        className="text-red-500"
-                                        variant={'ghost'}
-                                        size={'icon'}
-                                        disabled={
-                                            settings.VITE_ENSURE_DEFAULT_USER_USERNAME ===
-                                            user.username
-                                        }
-                                    >
-                                        <Trash />
-                                    </Button>
+
+                                    <UsersDeleteButton user={user} />
                                 </TableCell>
                             </TableRow>
                         ))}

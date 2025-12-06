@@ -15,10 +15,12 @@ import type { UserFormValues } from '@/interfaces/features/users/users-dialog-cr
 
 export function Header() {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [file, setFile] = useState<File | null>(null);
     const queryClient = useQueryClient();
 
     const handleSubmit = async (value: any) => {
+        setIsLoading(true);
         try {
             const user = await api<User>('users', {
                 method: 'POST',
@@ -52,6 +54,8 @@ export function Header() {
             }
 
             toast.error('Erro ao criar usuário.', { richColors: true });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -95,7 +99,7 @@ export function Header() {
                         </Button>
                     </DialogTrigger>
                 </div>
-                <UsersDialogCreate form={form} file={file} setFile={setFile} />
+                <UsersDialogCreate form={form} file={file} setFile={setFile} isLoading={isLoading} />
             </header>
         </Dialog>
     );

@@ -59,9 +59,6 @@ export function DasboardRecordHistory() {
     const records = data.data;
     const meta = data.meta;
 
-    const start = offset + 1;
-    const end = Math.min(offset + meta.limit, meta.total);
-
     return (
         <section className="space-y-4">
             <h2 className="flex items-center gap-2 text-xl font-semibold">
@@ -115,11 +112,7 @@ export function DasboardRecordHistory() {
                     </TableBody>
 
                     <TableCaption>
-                        <div className="flex items-center justify-between pt-2 border-t">
-                            <p className="text-sm text-text-muted">
-                                Mostrando {start} - {end} de {meta.total}
-                            </p>
-
+                        <div className="flex items-center justify-end pt-2 border-t">
                             <div className="flex items-center gap-3">
                                 <Button
                                     variant="outline"
