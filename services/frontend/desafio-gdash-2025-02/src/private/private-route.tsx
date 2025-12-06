@@ -8,7 +8,7 @@ export function PrivateRoute({ children }: { children: ReactNode }) {
     if (isLoading) return null;
 
     if (!isAuthenticated) {
-        return Navigate({ to: '/login' });
+        return <Navigate to="/login" />;
     }
 
     return children;
