@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"time"
 
 	consumer "github.com/willianOliveira-dev/desafio-gdash-2025/go-worker/consumer"
