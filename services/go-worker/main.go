@@ -18,7 +18,7 @@ func main () {
 
 	for {
 		time.Sleep(time.Second)
-		log.Println("Worker GO rodando...")
+		log.Printf("\rWorker GO rodando...")
 	}
 
 }

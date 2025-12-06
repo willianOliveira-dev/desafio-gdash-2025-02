@@ -15,19 +15,14 @@ func ValidateWeatherData(jsonData []byte) (*contracts.WeatherData, error) {
 		return nil, errors.New("JSON inválido ou tipos incorretos")
 	}
 
-	if data.Country == "" || 
-		data.City == "" || 
-		data.Clouds == 0 || 
-		data.FeelsLike == 0 || 
-		data.Humidity == 0 || 
-		data.Pressure == 0 || 
+	if data.Country == "" || data.City == "" || data.FeelsLike == 0 ||
+		data.Humidity == 0 ||
+		data.Pressure == 0 ||
 		data.Sunrise == "" ||
-		data.Sunset == "" || 
-		data.TempMax == 0.0 || 
-		data.TempMin == 0.0 || 
-		data.Temperature == 0.0 || 
-	    data.WindDeg == 0 || 
-		data.WindSpeed == 0.0 {
+		data.Sunset == "" ||
+		data.TempMax == 0.0 ||
+		data.TempMin == 0.0 ||
+		data.Temperature == 0.0 {
 		return nil, errors.New("faltando campos obrigatórios no JSON")
 	}
 
