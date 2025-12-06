@@ -18,8 +18,10 @@ import { settings } from '@/config/settings';
 
 export function LoginForm() {
     const [eyeOpen, setEyeOpen] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const navigate = useNavigate();
     const handleSubmit = async (value: any) => {
+        setIsLoading(true)
         try {
             await loginService(value.value);
             navigate({ to: '/dashboard' });
@@ -34,6 +36,8 @@ export function LoginForm() {
             toast.error('Erro ao realizar login. Tente novamente mais tarde.', {
                 richColors: true,
             });
+        } finally {
+            setIsLoading(false)
         }
     };
     const form = useForm({
@@ -170,7 +174,7 @@ export function LoginForm() {
                         className="w-full bg-primary-500 hover:bg-primary-600"
                         type="submit"
                     >
-                        Entrar
+                        {isLoading ? "Entrando..." : "Entrar"}
                     </Button>
                 </form>
                 <div className="flex flex-col items-center justify-center bg-gray-100 rounded-md px-4 py-2">

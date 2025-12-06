@@ -15,7 +15,10 @@ export function Header() {
         setDownloadingCSVfile(true);
         try {
             const res = await fetch(
-                settings.VITE_API_URL + '/weather/export.csv'
+                settings.VITE_API_URL + '/weather/export.csv',
+                {
+                    credentials: 'include',
+                }
             );
             const blob = await res.blob();
 
@@ -51,7 +54,10 @@ export function Header() {
         setDownloadingXLSXfile(true);
         try {
             const res = await fetch(
-                settings.VITE_API_URL + '/weather/export.xlsx'
+                settings.VITE_API_URL + '/weather/export.xlsx',
+                {
+                    credentials: 'include',
+                }
             );
             const blob = await res.blob();
 

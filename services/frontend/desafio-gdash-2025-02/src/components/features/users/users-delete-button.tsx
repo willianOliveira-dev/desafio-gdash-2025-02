@@ -26,9 +26,14 @@ export function UsersDeleteButton({ user, ...props }: UsersDeleteButtonProps) {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            await fetch(settings.VITE_API_URL + `/users/${user._id}`, {
-                method: 'DELETE',
+            const res = await fetch(settings.VITE_API_URL + `/users/${user._id}`, {
+                method: 'DELETE', 
+                credentials: 'include',
             });
+
+            if (!res.ok) {
+                toast.error("Falha ao tentar deletar usuário.");
+            }
 
             toast.success('Usuário deletado com sucesso!', {
                 richColors: true,
@@ -37,7 +42,6 @@ export function UsersDeleteButton({ user, ...props }: UsersDeleteButtonProps) {
             queryClient.invalidateQueries({ queryKey: ['users'] });
             setIsDialogOpen(false);
         } catch (error) {
-            console.log(error);
             const parsed = apiErrorSchema.safeParse(error);
 
             if (parsed.success) {
