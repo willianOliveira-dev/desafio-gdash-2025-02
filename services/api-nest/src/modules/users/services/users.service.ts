@@ -52,14 +52,14 @@ export class UsersService {
   }
 
   async findByEmailWithPassword(email: string): Promise<UserModel | null> {
-    const user = await this.repo.findByEmailWithPassword(email)
+    const user = await this.repo.findByEmailWithPassword(email.trim())
     return user
   }
 
   async findByUsernameWithPassword(
     username: string,
   ): Promise<UserModel | null> {
-    const user = await this.repo.findByUsernameWithPassword(username)
+    const user = await this.repo.findByUsernameWithPassword(username.trim())
     return user
   }
 
