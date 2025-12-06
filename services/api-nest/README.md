@@ -1,98 +1,95 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# /services/api-nest: Documentação Técnica da API Principal
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este documento detalha o microsserviço **`api-nest`**, o núcleo de dados e lógica de negócio da plataforma de monitoramento climático do Desafio Técnico GDASH 2025/02.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 1. Visão Geral do Microsserviço
 
-## Description
+A API, construída com NestJS, atua como o **Gateway de Dados** e o **Orquestrador de Lógica**. Ela recebe dados limpos do **Go Worker**, persiste-os no **MongoDB** e fornece interfaces (REST e Documentação) para o **Frontend**. A responsabilidade principal é a segurança, o gerenciamento de usuários e a execução da lógica de **Insights de IA**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+| Aspecto | Detalhe Técnico |
+| :--- | :--- |
+| **Tecnologia Principal** | NestJS (Node.js) |
+| **Banco de Dados** | MongoDB (via Mongoose ODM) |
+| **Comunicação de Dados** | HTTP (Interno, com Go Worker), REST (Externo, com Frontend) |
+| **Recursos Avançados** | Cron Jobs (@nestjs/schedule) e Inteligência Artificial (Google Gemini) |
 
-## Project setup
+---
 
-```bash
-$ npm install
-```
+## 2. Arquitetura Interna
 
-## Compile and run the project
+A aplicação adota uma **Arquitetura Escalável e Manutenível** (Clean Architecture/Domain-Driven Design), organizando a lógica em **Módulos** coesos e bem definidos.
 
-```bash
-# development
-$ npm run start
+| Módulo | Responsabilidades Chave |
+| :--- | :--- |
+| **Auth** | Login, Logout, Geração/Refresh de Tokens JWT e Estratégia de Cookies. |
+| **Users** | Criação, Listagem e Gerenciamento de Usuários (CRUD). |
+| **Weathers** | Persistência, Consulta (Paginação), Exportação de dados e Endpoints internos de recebimento. |
+| **Insights** | Lógica de **Geração de Insights de IA** (Cron Job diário) e disponibilização dos relatórios. |
+| **Avatars** | Serviço opcional para upload de imagens (Cloudinary). |
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## 3. Estratégia de Autenticação (Cookies HTTP-Only)
 
-## Run tests
+O mecanismo de autenticação foi projetado para ser **Seguro e Livre de Responsabilidades do Frontend**, seguindo o padrão de segurança profissional.
 
-```bash
-# unit tests
-$ npm run test
+1.  **Geração e Armazenamento:** No login (`POST /auth/login`), a API gera os tokens **Access** e **Refresh** JWTs e os armazena diretamente no navegador via **Cookies HTTP-only**.
+2.  **Segurança Contra XSS:** O atributo **HTTP-only** impede que scripts de terceiros (JavaScript) no frontend acessem ou roubem os tokens, mitigando ataques **XSS (Cross-Site Scripting)**.
+3.  **Fluxo Transparente:** Todas as requisições subsequentes do navegador enviam automaticamente os cookies para o servidor. O servidor valida o `accessToken` e renova o `refreshToken` quando necessário.
+4.  **Middleware de Segurança:** Utilização de `helmet`, `compression` e `morgan` para proteção básica e monitoramento.
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
-```
+## 4. Endpoints Principais
 
-## Deployment
+A documentação completa de todos os endpoints está disponível via **Swagger UI** após a inicialização do serviço.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+* **Documentação:** `http://localhost:3000/docs`
+* **Base API:** `/api/v1/gdash` (Configurável via `BASE_API`)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+| Rota | Descrição |
+| :--- | :--- |
+| `POST /auth/login` | Autentica o usuário e define os Cookies HTTP-only. |
+| `GET /weather/logs` | Lista logs climáticos, com paginação e filtros (Requer autenticação). |
+| `GET /weather/insights` | Retorna o último relatório de análise de IA (Requer autenticação). |
+| `POST /weather/logs` | Endpoint interno consumido pelo Go Worker para inserção de novos logs. |
+| `GET /weather/export.csv` | Exporta dados completos de clima (Requer autenticação). |
+| `CRUD /users` | Gerenciamento de usuários (Requer autenticação). |
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 5. Implementação de Insights de IA
 
-## Resources
+A inteligência da plataforma é fornecida pela análise assíncrona dos dados.
 
-Check out a few resources that may come in handy when working with NestJS:
+| Configuração | Detalhe |
+| :--- | :--- |
+| **Modelo de IA** | Google **Gemini 2.5 Flash** (via SDK `@ai-sdk/google`) |
+| **Execução** | **Cron Job Diário** (`CronExpression.EVERY_DAY_AT_3AM`) |
+| **Lógica** | O *Cron Job* busca os dados brutos e os envia ao Gemini com um prompt estruturado para gerar uma análise e previsão JSON, que é então salva no banco. |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 6. Configuração e Variáveis de Ambiente
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+As variáveis de ambiente são **validadas** na inicialização (Ver `src/env.validation.ts`) para garantir a integridade do sistema. A estrutura abaixo reflete os parâmetros críticos esperados no arquivo `.env`.
 
-## Stay in touch
+| Variável | Descrição | Valor Padrão / Exemplo |
+| :--- | :--- | :--- |
+| **`PORT`** | Porta de execução da API. | 3000 |
+| **`BASE_API`** | Prefixo global da API. | `api/v1/gdash` |
+| **`MONGO_URI`** | String de conexão completa do MongoDB. | `mongodb://...` |
+| **`JWT_ACCESS_SECRET`** | Chave secreta para assinatura do Access Token. | (Secreto) |
+| **`JWT_REFRESH_SECRET`** | Chave secreta para assinatura do Refresh Token. | (Secreto) |
+| **`GOOGLE_GENERATIVE_AI_API_KEY`**| Chave de acesso à API do Gemini. | (Secreto) |
+| **`FRONTEND_URL`** | URL do Frontend para configuração do CORS. | `http://localhost:5173` |
+| **`ENSURE_DEFAULT_USER_EMAIL`** | Email para criação do usuário Admin na inicialização. | `admin@gdash.io` |
+| **`ENABLE_AVATAR_UPLOAD`** | Flag para habilitar o serviço de Cloudinary (opcional). | `false` |
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Detalhes sobre Upload de Avatar (Cloudinary)
 
-## License
+O módulo de Avatars suporta upload de imagens para o Cloudinary, mas foi construído para ser opcional, visando a melhor experiência do recrutador.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Com Upload (Produção): Se as chaves CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET estiverem preenchidas e a flag ENABLE_AVATAR_UPLOAD for true, a API fará o upload real das imagens.
+
+Sem Upload (Padrão): Se ENABLE_AVATAR_UPLOAD for false (o padrão), o sistema irá automaticamente atribuir uma URL de imagem de perfil estática (default-avatar.png) ao usuário, sem exigir a configuração de qualquer chave externa.
