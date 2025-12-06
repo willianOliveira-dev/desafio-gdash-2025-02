@@ -31,7 +31,7 @@ export function LoginForm() {
                 });
                 return;
             }
-            toast.error('Error ao realizar login. Tente novamente mais tarde', {
+            toast.error('Erro ao realizar login. Tente novamente mais tarde.', {
                 richColors: true,
             });
         }

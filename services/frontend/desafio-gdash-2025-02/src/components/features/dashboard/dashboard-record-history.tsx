@@ -23,7 +23,7 @@ import { toast } from 'sonner';
 const LIMIT = 10;
 
 export function DasboardRecordHistory() {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState<number>(1);
     const offset = (page - 1) * LIMIT;
 
     const { data, isLoading } = useQuery({

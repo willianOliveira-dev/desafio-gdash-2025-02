@@ -11,7 +11,7 @@ function Users() {
     return (
         <Content>
             <Header />
-            <ManageUsers/>
+            <ManageUsers />
         </Content>
     );
 }
