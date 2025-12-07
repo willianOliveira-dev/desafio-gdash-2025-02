@@ -26,8 +26,7 @@ export async function api<T = null>(
 
     if (res.status === 401 && retry &&  baseUrl !== "auth/refresh") {
         try {
-            const data = await refreshService();
-            console.log(data);
+             await refreshService();
             return api<T>(baseUrl, options, false);
         } catch {
             throw { message: 'Sessão expirada.', status: 401 };
