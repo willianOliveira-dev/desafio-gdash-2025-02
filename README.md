@@ -10,7 +10,7 @@ A solução implementa um pipeline de dados distribuído que coleta informaçõe
 
 O vídeo explicativo, conforme exigido no desafio, detalhando a arquitetura, pipeline de dados, insights de IA e demonstração de execução.
 
-Link: 
+Link: https://youtu.be/DFtL7qygdoc?si=AO6jpKHsmO_7M_Kq
 
 
 -----
